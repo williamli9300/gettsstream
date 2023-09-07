@@ -59,8 +59,6 @@ def download_files(l, u, sfn):
         merge(sfn)
         return True
 
-    
-
 u = str(input("please enter the URL prefix (before number and '.ts') \n"))
 sn = int(input("please enter the first video number \n"))
 en = int(input("please enter the last video number \n"))
