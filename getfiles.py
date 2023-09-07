@@ -6,7 +6,7 @@ def merge(sfn):
     ts_dir = "./" + sfn
     with open(final_path, 'wb') as merged:
         for ts_file in os.listdir(ts_dir):
-            print("  > " + ts_file)
+            print("    > " + ts_file)
             filepath = ts_dir + "/" + ts_file
             with open(filepath, 'rb') as mergefile:
                 shutil.copyfileobj(mergefile, merged)
@@ -48,12 +48,18 @@ def download_files(l, u, sfn):
         fn_prefix_list = u.split("/")
         fn_prefix = fn_prefix_list[-1]
         for i in range(len(l)):
-            filename = "./" + sfn + "/" + (str(i+1)).rjust(5, "0") + ".ts"
-            print("    > writing " + filename + "...")
-            wget.download(l[i], out=filename)
+            try:
+                filename = "./" + sfn + "/" + (str(i+1)).rjust(5, "0") + ".ts"
+                print("    > writing " + filename + "...")
+                wget.download(l[i], out=filename)
+            except Exception as e:
+                print("##### Error thrown with URL " + (str(i+1)).rjust(5, "0") + ". moving on...")
+                i+=1
         print("----- downloads OK. continuing to merging... -----")
         merge(sfn)
         return True
+
+    
 
 u = str(input("please enter the URL prefix (before number and '.ts') \n"))
 sn = int(input("please enter the first video number \n"))
@@ -67,6 +73,6 @@ l, sfn = generate_list(u, sn, en, fn, wl)
 dl = download_files(l, u, sfn)
 
 if dl == False:
-    input('Operation cancelled. Press <ENTER> to continue')
+    input('Operation cancelled. Press <ENTER> to continue\n')
 else:
     input('Done. Press <ENTER> to continue')
