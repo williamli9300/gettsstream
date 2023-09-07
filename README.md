@@ -1,6 +1,6 @@
 # getTSstream
 
-#### Current version: `v0.2`. Tools contained within `Main` branch are always most recent.
+#### Current version: `v0.3`. Tools contained within `Main` branch are always most recent.
 
 A simple script for getting and assembling `*.ts` streamed videos. 
 
