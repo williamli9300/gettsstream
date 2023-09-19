@@ -1,3 +1,5 @@
+# getTSstream v0.4 - https://github.com/williamli9300/gettsstream
+
 import wget, ssl, time, os, subprocess, shutil
 
 def merge(sfn):
@@ -18,7 +20,7 @@ def generate_list(u, sn, en, fn, wl):
     l = []
     for i in range(sn, en +1):
         s = u + str(i) + ".ts\n"
-        l.append(s)
+        l.append(s + ",,," + str(i))
     sfn = fn.replace(".txt", "")
     sfn = sfn.replace(".ts", "")
 
@@ -48,12 +50,13 @@ def download_files(l, u, sfn):
         fn_prefix_list = u.split("/")
         fn_prefix = fn_prefix_list[-1]
         for i in range(len(l)):
+            line = l[i].split(",,,")
             try:
-                filename = "./" + sfn + "/" + (str(i+1)).rjust(5, "0") + ".ts"
+                filename = "./" + sfn + "/" + (line[1]).rjust(5, "0") + ".ts"
                 print("    > writing " + filename + "...")
-                wget.download(l[i], out=filename)
+                wget.download(line[0], out=filename)
             except Exception as e:
-                print("##### Error thrown with URL " + (str(i+1)).rjust(5, "0") + ". moving on...")
+                print("##### Error thrown with URL " + (line[1]).rjust(5, "0") + ". moving on...")
                 i+=1
         print("----- downloads OK. continuing to merging... -----")
         merge(sfn)
