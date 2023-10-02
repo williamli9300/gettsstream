@@ -1,4 +1,4 @@
-# getTSstream v0.4 - https://github.com/williamli9300/gettsstream
+# getTSstream v0.5 - https://github.com/williamli9300/gettsstream
 
 import wget, ssl, time, os, subprocess, shutil
 
@@ -16,7 +16,7 @@ def merge(sfn):
 
 def generate_list(u, sn, en, fn, wl):
     print("generating url list...")
-    time.sleep(0.25)
+    time.sleep(0.05)
     l = []
     for i in range(sn, en +1):
         s = u + str(i) + ".ts\n"
@@ -26,15 +26,17 @@ def generate_list(u, sn, en, fn, wl):
 
     if wl.upper() != "N":
         print("writing url list...")
-        time.sleep(0.25)
-        path = "./" + sfn + ".txt"
-        print("list path: " + path)
-        time.sleep(0.25)
-        with open(path, "w") as f:
+        time.sleep(0.05)
+        path = "./" + sfn
+        os.makedirs(path, exist_ok=True)
+        listpath = path + "/" + sfn + ".txt"
+        print("list path: " + listpath)
+        time.sleep(0.05)
+        with open(listpath, "w") as f:
             for i in l:
                 f.write(i)
     print("----- url list OK. continuing to downloads... -----")
-    time.sleep(0.25)
+    time.sleep(0.1)
     return l, sfn
 
 def download_files(l, u, sfn):
@@ -43,9 +45,7 @@ def download_files(l, u, sfn):
         return False
     else:
         print("downloading files...")
-        time.sleep(0.25)
-        path = "./" + sfn
-        os.makedirs(path, exist_ok=True)
+        time.sleep(0.05)
         ssl._create_default_https_context = ssl._create_unverified_context
         fn_prefix_list = u.split("/")
         fn_prefix = fn_prefix_list[-1]
@@ -69,7 +69,7 @@ fn = str(input("please enter file name\n"))
 wl = str(input("write file list? default=Yes, enter N for no\n"))   
 
 print("----- inputs OK. continuing to url list generation... -----")
-time.sleep(0.25)
+time.sleep(0.15)
 l, sfn = generate_list(u, sn, en, fn, wl)
 dl = download_files(l, u, sfn)
 
