@@ -64,7 +64,11 @@ def download_files(l, u, sfn):
         merge(sfn)
         return True
 
-u = str(input("please enter the URL prefix (before number and '.ts') \n"))
+uraw = str(input("please enter any URL (incl. number and '.ts') \n"))
+ulist = uraw.split("_")
+ulist[-1]=""
+u = "_".join(ulist)
+
 sn = int(input("please enter the number of the first *.ts file \n"))
 en = int(input("please enter the number of the last *.ts file \n"))
 fn = str(input("please enter file name\n"))
