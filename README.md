@@ -1,6 +1,6 @@
 # getTSstream
 
-#### Current version: `v0.5`. Tools contained within `Main` branch are always most recent.
+#### Current version: `v0.7`. Tools contained within `Main` branch are always most recent.
 
 A simple script for getting and assembling `*.ts` streamed videos. 
 
@@ -24,8 +24,10 @@ reference and/or educational purposes. Use responsibly, and at your own risk.
 - Run script.
 - Follow the command line prompts.
 
-## To find the addess of your `*.ts` streamed videos:
+## To find the address of your `*.ts` streamed videos:
 - `Inspect` the page
 - Navigate to the `Network` tab
 - Find the numbered `*.ts` files
 - Right click > Copy Link Address
+- Typically the first Video Number is 0 or 1.
+- You can find the last number by clicking into the last 45 seconds of the video, while actively viewing the `Network` tab. You can add +10 to the Last Video Number to catch any missed stream segments, as the script ignores any nonexistent Video Numbers.
