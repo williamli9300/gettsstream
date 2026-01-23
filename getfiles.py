@@ -1,85 +1,73 @@
-# getTSstream v0.7 - https://github.com/williamli9300/gettsstream
+# getTSstream v0.8.0 - https://github.com/williamli9300/gettsstream
 
-import wget, ssl, time, os, subprocess, shutil
+import wget, ssl, time, os, shutil, subprocess, sys
 
 def merge(sfn):
     print("merging ts files...")
-    final_path = "./" + sfn + ".ts"
+    ts_path = "./" + sfn + ".ts"
     ts_dir = "./" + sfn
-    with open(final_path, 'wb') as merged:
+    with open(ts_path, 'wb') as merged:
         for ts_file in os.listdir(ts_dir):
-            print("    > " + ts_file)
+            print("> " + ts_file)
             filepath = ts_dir + "/" + ts_file
             with open(filepath, 'rb') as mergefile:
                 shutil.copyfileobj(mergefile, merged)
-    print("----- merging OK. -----")
+    print("\n----- merging OK. generating mp4. -----")
+    cmd = "ffmpeg -i \"" + ts_path + "\" -c:v libx265 -crf 28 -preset fast -bsf:a aac_adtstoasc \"" + sfn + ".mp4\""
+    # if hevc_nvenc available: "ffmpeg -i \"" + ts_path + "\" -c:v hevc_nvenc -cq:v 28 -preset fast -bsf:a aac_adtstoasc \"" + sfn + ".mp4\""
+    subprocess.run(cmd)
+    print("\n----- mp4 created successfully. deleting temp files. -----")
+    shutil.rmtree(ts_dir)
+    os.remove(ts_path)
+    print("\n----- done. -----")
 
-def generate_list(u, sn, en, fn, wl):
+def generate_list(u, en, fn):
     print("generating url list...")
-    time.sleep(0.1)
     l = []
-    for i in range(sn, en +1):
+    for i in range(0, en +1):
         s = u + str(i) + ".ts\n"
         l.append(s)
     sfn = fn.replace(".txt", "")
     sfn = sfn.replace(".ts", "")
-
-    if wl.upper() != "N":
-        print("writing url list...")
-        time.sleep(0.1)
-        folderpath = "./" + sfn
-        os.makedirs(folderpath, exist_ok=True)
-        path = folderpath + "/" + sfn + ".txt"
-
-        print("list path: " + path)
-        time.sleep(0.1)
-        with open(path, "w") as f:
-            for i in l:
-                f.write(i)
-    print("----- url list OK. continuing to downloads... -----")
-    time.sleep(0.25)
+    print("\n----- url list OK. continuing to downloads... -----")
     return l, sfn
 
 def download_files(l, u, sfn):
-    dl = input("WARNING: SSL verification disabled. Continue? default=Yes, enter N for no\n")
-    if dl.upper == "N":
-        return False
-    else:
-        print("downloading files...")
-        time.sleep(0.1)
-        path = "./" + sfn
-        os.makedirs(path, exist_ok=True)
-        ssl._create_default_https_context = ssl._create_unverified_context
-        fn_prefix_list = u.split("/")
-        fn_prefix = fn_prefix_list[-1]
-        for i in range(len(l)):
-            try:
-                filename = "./" + sfn + "/" + (str(i+1)).rjust(5, "0") + ".ts"
-                print("    > writing " + filename + "...")
-                wget.download(l[i], out=filename)
-            except Exception as e:
-                print("##### Error thrown with URL " + (str(i+1)).rjust(5, "0") + ". moving on...")
-                i+=1
-        print("----- downloads OK. continuing to merging... -----")
-        merge(sfn)
-        return True
+    print("downloading files...")
+    time.sleep(0.1)
+    path = "./" + sfn
+    os.makedirs(path, exist_ok=True)
+    ssl._create_default_https_context = ssl._create_unverified_context
+    fn_prefix_list = u.split("/")
+    fn_prefix = fn_prefix_list[-1]
+    first_error = True
+    for i in range(len(l)):
+        try:
+            filename = "./" + sfn + "/" + (str(i+1)).rjust(5, "0") + ".ts"
+            wget.download(l[i], out=filename)
+        except Exception as e:
+            if first_error == True: 
+                print("\n")
+                first_error = False
+            print("#### Error thrown with URL " + (str(i+1)).rjust(5, "0") + ". moving on...")
+            i+=1
+    print("----- downloads OK. continuing to merging... -----")
+    merge(sfn)
+    return True
 
-uraw = str(input("please enter any URL (incl. number and '.ts') \n"))
-ulist = uraw.split("_")
-ulist[-1]=""
-u = "_".join(ulist)
-
-sn = int(input("please enter the number of the first *.ts file \n"))
-en = int(input("please enter the number of the last *.ts file \n"))
-fn = str(input("please enter file name\n"))
-wl = str(input("write file list? default=Yes, enter N for no\n"))   
-
-print("----- inputs OK. continuing to url list generation... -----")
-time.sleep(0.1)
-l, sfn = generate_list(u, sn, en, fn, wl)
-dl = download_files(l, u, sfn)
-
-if dl == False:
-    input('Operation cancelled. Press <ENTER> to continue\n')
+if len(sys.argv) != 4:
+    print("! ERROR: Please enter THREE arguments.\nUsage: python getfiles \"[url]\" [filenum] \"[name]\"")
 else:
-    input('Done. Press <ENTER> to continue')
+    uraw = str(sys.argv[1])
+    ulist = uraw.split("_")
+    ulist[-1]=""
+    u = "_".join(ulist)
+    en = int(sys.argv[2])
+    fn = str(sys.argv[3])
+    print("\n----- inputs OK. continuing to url list generation... -----")
+    time.sleep(0.1)
+    l, sfn = generate_list(u, en, fn)
+    dl = download_files(l, u, sfn)
+    
+    if dl == True:
+        input('Press <ENTER> to continue')
