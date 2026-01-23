@@ -13,7 +13,8 @@ def merge(sfn):
             with open(filepath, 'rb') as mergefile:
                 shutil.copyfileobj(mergefile, merged)
     print("\n----- merging OK. generating mp4. -----")
-    cmd = "ffmpeg -i \"" + ts_path + "\" -c:v hevc_nvenc -cq:v 28 -preset fast -bsf:a aac_adtstoasc \"" + sfn + ".mp4\""
+    cmd = "ffmpeg -i \"" + ts_path + "\" -c:v libx265 -crf 28 -preset fast -bsf:a aac_adtstoasc \"" + sfn + ".mp4\""
+    # if hevc_nvenc available: "ffmpeg -i \"" + ts_path + "\" -c:v hevc_nvenc -cq:v 28 -preset fast -bsf:a aac_adtstoasc \"" + sfn + ".mp4\""
     subprocess.run(cmd)
     print("\n----- mp4 created successfully. deleting temp files. -----")
     shutil.rmtree(ts_dir)
