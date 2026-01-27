@@ -1,6 +1,6 @@
 # getTSstream
 
-#### Current version: `v0.8.0`. Tools contained within `Main` branch are always most recent.
+#### Current version: `v1.0.0`. Tools contained within `Main` branch are always most recent.
 
 A simple script for getting and assembling `*.ts` streamed videos. 
 
@@ -22,14 +22,26 @@ reference and/or educational purposes. Use responsibly, and at your own risk.
 
 ## Dependencies:
 - Requires `python 3.x`.
-- Requires `ffmpeg`.
+- Recommend `ffmpeg` installed to path.
+
 ## Usage:
 - Put `getfiles.py` in the folder you would like to save your TS video.
 - Open a command prompt window and navigate to the folder (e.g. using `cd <folder_path>`)
-- Usage: `python getfiles "[url]" [filenum] "[name]"` where:
-  - `"[url]" is the entire URL of any of the numbered `*.ts` files, flanked by quotation marks `"`.
-  - `[filenum]` is the largest video number in any of the links
-  - `"[name]"` is the filename you'd like to save your video as, flanked by quotation marks `"`.
+
+**For help, run `python getfiles.py -h` or `python getfiles.py --help`.**
+
+- Usage: `python getfiles "<url>" <frags> "<name>" [flags]`, where:
+  - `"<url>"` is the entire URL of any of the numbered `*.ts` files, flanked by quotation marks `"`.
+  - `<frags>` is the number of fragments your video is split into (i.e. largest video number of your links).
+  - `"<name>"` is the filename you'd like to save your video as, flanked by quotation marks `"`.
+- Flags:
+  - `-mt, --multithreading [<threads>]`: enables multithreading for downloads.
+  - `-f, --ffmpeg [<bool>]`: `ffmpeg` conversion to HEVC `*.mp4` (enabled by default).
+    - **If you don't have `ffmpeg` installed, pass `-f false`.**
+  - `-nv, --nvenc [<bool>]`: NVENC acceleration of `ffmpeg` (enabled by default). Ignored if no `ffmpeg` conversion or if no NVENC device or encoder is available or installed.
+  - `-k, --keep`: keeps temporary files otherwise deleted by the program:
+    - `*.ts` fragments if no `ffmpeg` conversion;
+    - `*.ts` fragments and merged `*.ts` file if converted using `ffmpeg`).
 
 ## To find the address of your `*.ts` streamed videos:
 - `Inspect` the page
