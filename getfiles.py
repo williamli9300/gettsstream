@@ -205,7 +205,7 @@ def usage(e):
           "                                              + if flag passed with no argument, variable bit rate targeting 0.75 of *.ts bit rate will be used.\n" +
           "                                              + supports K, M, and G notation (e.g. 1100K, 1.25M, 0.01G).\n" +
           "                                              + ignored if -ffmpeg set to false.\n" +
-        "\n  -p, -preset .............................. pass hevc presets to ffmpeg. defaults to p3 (nvenc_hevc) or faster (libx265).\n" +
+        "\n  -p, -preset <str> ........................ pass hevc presets to ffmpeg. defaults to p3 (nvenc_hevc) or faster (libx265).\n" +
           "                                              + supported options for nvenc_hevc: \n" +
           "                                                [p1, p2, p3, p4, p5, p6, p7, default, slow, medium, fast, hp, hq, bd, ll, llhq, llhp, lossless, losslesshp]\n"
           "                                              + supported options for libx265: \n" +
