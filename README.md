@@ -39,15 +39,19 @@ reference and/or educational purposes. Use responsibly, and at your own risk.
   - `-f, -ffmpeg [<bool>]`: `ffmpeg` conversion to HEVC `*.mp4` (enabled by default).
     - **If you don't have `ffmpeg` installed, pass `-f false`.**
   - `-nv, -nvenc [<bool>]`: NVENC acceleration of `ffmpeg` (enabled by default). Ignored if no `ffmpeg` conversion or if no NVENC device or encoder is available or installed.
+  - `-k, -keep`: keeps temporary files otherwise deleted by the program:
+    - `*.ts` fragments if no `ffmpeg` conversion;
+    - `*.ts` fragments and merged `*.ts` file if converted using `ffmpeg`).
   - `-s, -subtitle <str>`: enables retrieval and muxing of subtitle from link. See below.
   - `-sl, -sublang <str>`: define a three-letter language code for your subtitle track.
   - `-sn, -subname <str>`: define a title for your subtitle track.
   - `-c, -crf [<int>]`: define a constant rate factor for `ffmpeg` conversion. defaults to 28 if passed. gets priority over `-vbrf` and `-vbr`.
   - `-vf, -vbrf [<float>]`: define a scale factor of the `*.ts` bitrate to target (using vbr) during `ffmpeg` conversion. defaults to 0.75, even if flag not passed. falls back to `-crf 28` if target bitrate cannot be identified.
   - `-v, -vbr <int>`: explicitly define a bitrate to target (using vbr) during `ffmpeg` conversion. gets priority of `-vbrf`.
-  - `-k, -keep`: keeps temporary files otherwise deleted by the program:
-    - `*.ts` fragments if no `ffmpeg` conversion;
-    - `*.ts` fragments and merged `*.ts` file if converted using `ffmpeg`).
+  - `-p, -preset <str>: pass hevc presets to `ffmpeg` for conversion.
+    - `hevc_nvenc` supported presets: `p1`, `p2`, `p3`, `p4`, `p5`, `p6`, `p7`, `default`, `slow`, `medium`, `fast`, `hp`, `hq`, `bd`, `ll`, `llhq`, `llhp`, `lossless`, `losslesshp`
+    - `libx264` supported presets: `ultrafast`, `superfast`, `veryfast`, `faster`, `fast`, `medium`, `slow`, `slower`, `veryslow`, `placebo`
+  
 
 ## To find the address of your `*.ts` streamed videos:
 - `Inspect` the page.
