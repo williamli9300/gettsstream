@@ -48,7 +48,7 @@ reference and/or educational purposes. Use responsibly, and at your own risk.
   - `-c, -crf [<int>]`: define a constant rate factor for `ffmpeg` conversion. defaults to 28 if passed. gets priority over `-vbrf` and `-vbr`.
   - `-vf, -vbrf [<float>]`: define a scale factor of the `*.ts` bitrate to target (using vbr) during `ffmpeg` conversion. defaults to 0.75, even if flag not passed. falls back to `-crf 28` if target bitrate cannot be identified.
   - `-v, -vbr <int>`: explicitly define a bitrate to target (using vbr) during `ffmpeg` conversion. gets priority of `-vbrf`.
-  - `-p, -preset <str>: pass hevc presets to `ffmpeg` for conversion.
+  - `-p, -preset <str>`: pass hevc presets to `ffmpeg` for conversion.
     - `hevc_nvenc` supported presets: `p1`, `p2`, `p3`, `p4`, `p5`, `p6`, `p7`, `default`, `slow`, `medium`, `fast`, `hp`, `hq`, `bd`, `ll`, `llhq`, `llhp`, `lossless`, `losslesshp`
     - `libx264` supported presets: `ultrafast`, `superfast`, `veryfast`, `faster`, `fast`, `medium`, `slow`, `slower`, `veryslow`, `placebo`
   
